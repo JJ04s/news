@@ -1,0 +1,70 @@
+:root {
+  /* 🎨 Color Tokens (PDF 명세 2. Color tokens 참조) */
+  --color-ink: #14212B;       /* 본문 텍스트, 진한 라벨 */
+  --color-ink-alt: #14202B;   /* 보조 텍스트 (swap interchangeably) */
+  --color-sub: #5F6E76;       /* 부가 정보, 날짜, 캡션, 구독 라인 */
+  --color-mute: #879298;      /* 비활성 탭 라벨, 빈 셰브론 */
+  --color-line: #D2DAE0;      /* 1px 구분선, 카드 테두리, 그리드 스트로크 */
+  --color-soft: #F5F7F9;      /* 티커 배경, 리스트 뷰 배경 */
+  --color-soft-alt: #F7F7FC;  /* 보조 배경 */
+  --color-card: #FFFFFF;      /* 카드 배경, 그리드 셀, 구독 버튼 */
+  --color-page: #FEFEFE;      /* 페이지 전체 배경 */
+  
+  /* 🌟 Accent Colors */
+  --color-accent: #7890E7;      /* 브랜드 컬러 (구독 뱃지, 활성 탭 채우기) */
+  --color-accent-deep: #4362D0; /* 프로그레스 바 채우기 색상 */
+  --color-badge-ink: rgba(255, 255, 255, 0.7); /* 뱃지 내 숫자 색상 */
+
+  /* 🌑 Shadows & Effects */
+  --shadow-pill: 0 1px 2px rgba(20, 33, 43, 0.04); /* 구독 버튼 전용 그림자 */
+
+  /* 📏 Spacing System (8px Base - PDF 4. Spacing 참조) */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* 📐 Radii (테두리 둥글기 - PDF 5. Radii 참조) */
+  --radius-0: 0px;
+  --radius-sub: 2px;    /* 언론사 로고 배경 (KBS WORLD 등) */
+  --radius-pill: 14px;  /* 구독 버튼 (높이 28px) */
+  --radius-badge: 10px; /* 구독 뱃지 (20x20) */
+
+  /* 字体 (Typography Family) */
+  --font-main: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-serif: 'Noto Serif KR', serif;
+
+  /* 📝 Typography Tokens (Size / Weight / Leading / Tracking - PDF 3. Typography 참조) */
+  /* Display (Header Wordmark) */
+  --typo-display-size: 24px;
+  --typo-display-weight: 700;
+  --typo-display-lh: 1;
+  --typo-display-ls: -0.02em;
+
+  /* Heading (Active tab, Article headline) */
+  --typo-heading-size: 16px;
+  --typo-heading-weight: 700;
+  --typo-heading-lh: 1;
+
+  /* Body (Inactive tab, Today's date) */
+  --typo-body-size: 16px;
+  --typo-body-weight: 500;
+  --typo-body-lh: 22px;
+  --typo-body-ls: -0.01em;
+
+  /* List Item (Article list) */
+  --typo-list-size: 14px;
+  --typo-list-weight: 500;
+  --typo-list-lh: 1.5;
+
+  /* Caption & Badge */
+  --typo-caption-size: 12px;
+  --typo-caption-weight: 500;
+  --typo-caption-lh: 1;
+}
