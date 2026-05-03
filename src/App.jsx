@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getPressList, getTickerData } from './api/newsApi';
+import Header from './components/Header/Header';
 import './App.css';
 
 /**
@@ -44,9 +45,7 @@ function App() {
       <main className="newsstand-canvas">
         
         {/* Phase 2.2: Header 영역 */}
-        <section className="placeholder header-area">
-          Header (Logo & Date)
-        </section>
+        <Header />
 
         {/* Phase 2.3: Ticker 영역 */}
         <section className="placeholder ticker-area">
