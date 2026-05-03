@@ -1,0 +1,33 @@
+.app-container {
+  width: 100%;
+  min-width: 1280px;
+  min-height: 100vh;
+  background-color: var(--color-page);
+  display: flex;
+  justify-content: center;
+}
+
+.newsstand-canvas {
+  width: 930px;
+  /* PDF 명세: top: header y 58 (height 29) */
+  padding-top: 58px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 임시 플레이스홀더 스타일 (영역 확인용) */
+.placeholder {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-soft);
+  border: 1px dashed var(--color-line);
+  color: var(--color-sub);
+  margin-bottom: var(--space-8);
+}
+
+.header-area { height: 29px; }
+.ticker-area { height: 49px; margin-top: 40px; } /* header(58+29=87) -> ticker(127) 사이 간격 */
+.tabbar-area { height: 24px; margin-top: 32px; } /* ticker(127+49=176) -> tabbar(208) 사이 간격 */
+.content-area { height: 388px; margin-top: 24px; } /* tabbar(208+24=232) -> content(256) 사이 간격 */

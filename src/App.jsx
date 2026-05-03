@@ -1,86 +1,70 @@
 import { useState, useEffect } from 'react';
 import { getPressList, getTickerData } from './api/newsApi';
+import './App.css';
 
 /**
- * 데이터 검증용 App 컴포넌트 (V2)
- * 설계 포인트: 
- * 1. 24개 언론사가 6x4 그리드 형태로 올바르게 렌더링되는지 확인합니다.
- * 2. 이미지 없는 로고(logoProps)의 스타일 속성들이 정상적으로 적용되는지 테스트합니다.
+ * [Phase 2.1] 메인 App 컴포넌트
+ * 설계 포인트:
+ * 1. PDF 명세서의 Canvas(1280px)와 Content(930px) 레이아웃을 구현합니다.
+ * 2. 전체 서비스의 뼈대를 잡고, 이후 개발할 컴포넌트들의 위치(Slot)를 확보합니다.
+ * 3. 데이터 로드 로직은 최상단인 App에서 관리하여 하위로 내려주는 구조를 유지합니다.
  */
 function App() {
   const [pressList, setPressList] = useState([]);
   const [tickers, setTickers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 데이터 로드 로직 (Phase 1.4 유지)
   useEffect(() => {
     const loadData = async () => {
-      setIsLoading(true);
+      try {
+        const [presses, tickerData] = await Promise.all([
+          getPressList(),
+          getTickerData()
+        ]);
 
-      const presses = await getPressList();
-      const tickerData = await getTickerData();
-
-      setPressList(presses);
-      setTickers(tickerData);
-
-      setIsLoading(false);
+        setPressList(presses);
+        setTickers(tickerData);
+      } catch (error) {
+        console.error('초기 데이터 로딩 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     loadData();
+    // --- [데이터 로드] 기능 종료 ---
   }, []);
 
-  if (isLoading) return <div style={{ padding: '40px' }}>데이터를 불러오는 중입니다...</div>;
+  if (isLoading) return <div className="loading">뉴스를 불러오는 중입니다...</div>;
 
   return (
-    <div style={{ padding: '40px', backgroundColor: 'var(--color-page)', minHeight: '100vh' }}>
-      <header style={{ marginBottom: '40px' }}>
-        <h1 style={{ color: 'var(--color-accent)', marginBottom: '8px' }}>🗞️ 뉴스스탠드 API 검증 (24개 언론사)</h1>
-        <p style={{ color: 'var(--color-sub)' }}>newApi.js를 통해 불러온 데이터</p>
-      </header>
+    <div className="app-container">
+      {/* 930px 고정 너비의 메인 콘텐츠 영역 */}
+      <main className="newsstand-canvas">
+        
+        {/* Phase 2.2: Header 영역 */}
+        <section className="placeholder header-area">
+          Header (Logo & Date)
+        </section>
 
-      {/* 그리드 뷰 검증 (6x4) */}
-      <section style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(6, 154px)', 
-        gridTemplateRows: 'repeat(4, 96px)',
-        gap: '1px',
-        backgroundColor: 'var(--color-line)', // 구분선 효과
-        width: 'fit-content',
-        border: '1px solid var(--color-line)'
-      }}>
-        {pressList.map((press) => {
-          const { text, color, bg, font, weight, italic, accent, accentChar } = press.logoProps;
-          
-          return (
-            <div key={press.id} style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center',
-              backgroundColor: bg || 'var(--color-card)',
-              width: '154px',
-              height: '96px',
-              padding: '10px',
-              textAlign: 'center',
-              fontFamily: font === 'serif' ? 'var(--font-serif)' : 'var(--font-main)',
-              fontWeight: weight || 500,
-              fontStyle: italic ? 'italic' : 'normal',
-              color: color || 'var(--color-ink)',
-              fontSize: '16px'
-            }}>
-              {/* 강조색(Accent) 처리 로직 테스트 */}
-              {accent ? (
-                <span>
-                  {text.substring(0, accentChar)}
-                  <span style={{ color: accent }}>{text.substring(accentChar)}</span>
-                </span>
-              ) : text}
-            </div>
-          );
-        })}
-      </section>
+        {/* Phase 2.3: Ticker 영역 */}
+        <section className="placeholder ticker-area">
+          News Ticker (Rolling Lanes)
+        </section>
 
-      <footer style={{ marginTop: '40px', color: 'var(--color-mute)', fontSize: '12px' }}>
-        // --- 24개 언론사 로고 데이터 검증 종료 ---
-      </footer>
+        {/* Phase 2.4/2.5: 메인 영역 (TabBar + Grid/List) */}
+        <div className="main-content-wrapper">
+          <section className="placeholder tabbar-area">
+            TabBar (All/Sub & Grid/List Toggle)
+          </section>
+
+          <section className="placeholder content-area">
+            Main Content (Grid View / List View)
+          </section>
+        </div>
+
+      </main>
     </div>
   );
 }
