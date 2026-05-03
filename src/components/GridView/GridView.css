@@ -1,0 +1,69 @@
+.grid-view-container {
+  display: grid;
+  /* 6열 4행 구조 설계 */
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 96px); /* 각 셀의 높이를 96px로 고정 */
+  
+  border-top: 1px solid var(--color-line);
+  border-left: 1px solid var(--color-line);
+  background-color: var(--color-white);
+  margin-top: 24px;
+}
+
+.grid-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.press-logo {
+  font-size: 20px;
+  padding: 4px 8px;
+  text-align: center;
+  user-select: none;
+}
+
+/* 호버 시 구독 버튼 레이어 */
+.grid-hover-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-soft); /* 정의된 배경색으로 수정 */
+  display: none; /* 기본은 숨김 */
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-item:hover .press-logo {
+  display: none; /* 호버 시 로고 숨김 */
+}
+
+.grid-item:hover .grid-hover-layer {
+  display: flex;
+}
+
+.subscribe-button {
+  padding: 4px 12px;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-card); /* 정의된 변수로 수정 */
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out; /* 변화를 부드럽게 추가 */
+}
+
+.subscribe-button:hover {
+  background-color: var(--color-soft);
+  transform: scale(1.05); /* 5% 살짝 커짐 */
+  box-shadow: var(--shadow-pill); /* 입체감 있는 그림자 */
+  border-color: var(--color-sub); /* 테두리도 살짝 진하게 */
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { getPressList, getTickerData } from './api/newsApi';
 import Header from './components/Header/Header';
 import Ticker from './components/Ticker/Ticker';
+import GridView from './components/GridView/GridView';
 import './App.css';
 
 /**
@@ -57,9 +58,8 @@ function App() {
             TabBar (All/Sub & Grid/List Toggle)
           </section>
 
-          <section className="placeholder content-area">
-            Main Content (Grid View / List View)
-          </section>
+          {/* Phase 2.4: 그리드 뷰 구현 */}
+          <GridView pressList={pressList} />
         </div>
 
       </main>
