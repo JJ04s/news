@@ -1,0 +1,134 @@
+.list-view-container {
+  width: 100%;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-line);
+  margin-top: 24px;
+}
+
+/* 1. 카테고리 탭 스타일 */
+.category-tab-bar {
+  display: flex;
+  height: 40px;
+  background-color: var(--color-soft);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.category-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.category-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-sub);
+}
+
+.category-tab.active {
+  background-color: var(--color-accent);
+}
+
+.category-tab.active .category-name {
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+.progress-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 2. 뉴스 콘텐츠 스타일 */
+.news-content-area {
+  padding: 24px;
+}
+
+.news-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+}
+
+.press-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.edit-time {
+  font-size: 12px;
+  color: var(--color-sub);
+}
+
+.news-body {
+  display: flex;
+  gap: 32px;
+}
+
+/* 주요 기사 */
+.main-article {
+  flex: 1;
+  max-width: 340px;
+}
+
+.thumbnail-wrapper {
+  width: 340px;
+  height: 188px;
+  background-color: var(--color-soft);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.thumbnail-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+/* 서브 기사 */
+.sub-article-list {
+  flex: 1;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sub-article-item {
+  border-bottom: 1px solid transparent;
+}
+
+.sub-title {
+  text-decoration: none;
+  font-size: 16px;
+  color: var(--color-ink);
+  display: block;
+}
+
+.sub-title:hover {
+  text-decoration: underline;
+}
+
+.sub-article-notice {
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--color-mute);
+}

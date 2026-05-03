@@ -3,6 +3,7 @@ import { getPressList, getTickerData } from './api/newsApi';
 import Header from './components/Header/Header';
 import Ticker from './components/Ticker/Ticker';
 import GridView from './components/GridView/GridView';
+import ListView from './components/ListView/ListView';
 import './App.css';
 
 /**
@@ -13,6 +14,7 @@ import './App.css';
  * 3. 데이터 로드 로직은 최상단인 App에서 관리하여 하위로 내려주는 구조를 유지합니다.
  */
 function App() {
+  const [categories, setCategories] = useState([]);
   const [pressList, setPressList] = useState([]);
   const [tickers, setTickers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,13 +23,12 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [presses, tickerData] = await Promise.all([
-          getPressList(),
-          getTickerData()
-        ]);
+        const response = await fetch('/src/data/mockData.json');
+        const data = await response.json();
 
-        setPressList(presses);
-        setTickers(tickerData);
+        setCategories(data.categories);
+        setPressList(data.pressList);
+        setTickers(data.tickers);
       } catch (error) {
         console.error('초기 데이터 로딩 실패:', error);
       } finally {
@@ -58,8 +59,12 @@ function App() {
             TabBar (All/Sub & Grid/List Toggle)
           </section>
 
-          {/* Phase 2.4: 그리드 뷰 구현 */}
+          {/* 확인을 위해 그리드 뷰와 리스트 뷰를 모두 렌더링합니다. */}
+          {/* Phase 2.4: 그리드 뷰 */}
           <GridView pressList={pressList} />
+
+          {/* Phase 2.5: 리스트 뷰 */}
+          <ListView categories={categories} pressList={pressList} />
         </div>
 
       </main>
