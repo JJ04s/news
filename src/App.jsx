@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getPressList, getTickerData } from './api/newsApi';
 import Header from './components/Header/Header';
+import Ticker from './components/Ticker/Ticker';
 import './App.css';
 
 /**
@@ -48,9 +49,7 @@ function App() {
         <Header />
 
         {/* Phase 2.3: Ticker 영역 */}
-        <section className="placeholder ticker-area">
-          News Ticker (Rolling Lanes)
-        </section>
+        <Ticker tickers={tickers} />
 
         {/* Phase 2.4/2.5: 메인 영역 (TabBar + Grid/List) */}
         <div className="main-content-wrapper">
