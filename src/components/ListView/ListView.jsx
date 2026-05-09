@@ -1,16 +1,21 @@
+import { useContext } from 'react';
+import { NewsContext } from '../../context/NewsContext';
 import './ListView.css';
 
 /**
- * [Phase 2.5] ListView 컴포넌트
+ * [Phase 3.1] ListView 컴포넌트
  * 설계 포인트:
- * 1. 상단 카테고리 탭과 하단 뉴스 콘텐츠 영역으로 구성됩니다.
- * 2. 카테고리 탭은 6개의 카테고리를 균등하게 배치하며, 현재 선택된 탭에는 프로그레스 바 영역을 확보합니다.
- * 3. 뉴스 콘텐츠는 좌측 주요 기사(이미지+제목)와 우측 서브 기사 목록으로 분리합니다.
+ * 1. 데이터 구독: NewsContext에서 카테고리와 언론사 목록을 직접 가져옵니다.
+ * 2. 렌더링 방어: 데이터가 비어있을 경우 화면이 깨지지 않도록 얼리 리턴(Early Return) 처리합니다.
  */
-function ListView({ categories, pressList }) {
+function ListView() {
+  const { categories, pressList, isLoading } = useContext(NewsContext);
+
+  // 데이터 로딩 중이거나 데이터가 없을 때의 처리
+  if (isLoading || !pressList || pressList.length === 0) return null;
+
   // 현재는 UI 틀 구성을 위해 첫 번째 언론사 데이터를 사용합니다.
   const currentPress = pressList[0];
-  if (!currentPress) return null;
 
   return (
     <div className="list-view-container">

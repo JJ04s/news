@@ -1,13 +1,18 @@
+import { useContext } from 'react';
+import { NewsContext } from '../../context/NewsContext';
 import './GridView.css';
 
 /**
- * [Phase 2.4] GridView 컴포넌트
+ * [Phase 3.1] GridView 컴포넌트
  * 설계 포인트:
- * 1. CSS Grid를 활용하여 6x4(24개) 언론사 바둑판 레이아웃을 구현합니다.
- * 2. 각 셀(Grid Item)은 고정된 높이를 가지며, 내부 로고는 중앙 정렬합니다.
- * 3. 데이터의 logoProps를 활용하여 텍스트 기반 로고를 유연하게 렌더링합니다.
+ * 1. 데이터 구독: NewsContext를 통해 전역 언론사 데이터를 가져옵니다.
+ * 2. 렌더링 방어: 데이터 로딩 중이거나 데이터가 없을 경우를 대비한 방어 로직을 추가했습니다.
  */
-function GridView({ pressList }) {
+function GridView() {
+  const { pressList, isLoading } = useContext(NewsContext);
+
+  if (isLoading || !pressList) return null;
+
   // 24개의 그리드 칸을 유지하기 위해 데이터가 부족하더라도 24개를 보장합니다.
   const displayList = pressList.slice(0, 24);
 

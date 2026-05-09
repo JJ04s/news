@@ -1,33 +1,24 @@
+import TickerLane from './TickerLane';
 import './Ticker.css';
 
 /**
- * [Phase 2.3] Ticker 컴포넌트
+ * [Phase 3.1] Ticker 컴포넌트
  * 설계 포인트:
- * 1. PDF 명세서에 따라 좌우 2개의 독립된 레인(Lane) 구조로 설계했습니다.
- * 2. 언론사 영역(56px)과 뉴스 제목 영역(flex 1)을 분리하여 레이아웃을 고정했습니다.
- * 3. 말줄임표(ellipsis)를 적용하여 뉴스 제목이 길어져도 레이아웃이 깨지지 않게 방어했습니다.
+ * 1. 구조적 분리: 좌/우 독립된 레인을 TickerLane 컴포넌트로 관리합니다.
+ * 2. 레이아웃: CSS Flexbox를 사용하여 두 개의 레인을 수평 배치합니다.
  */
-function Ticker({ tickers }) {
-  // 데이터가 없을 때를 대비한 방어 코드
-  if (!tickers) return null;
-
+function Ticker() {
   return (
     <div className="ticker-container">
-      {/* 왼쪽 레인 */}
-      <div className="ticker-lane">
-        <span className="ticker-press">연합뉴스</span>
-        <div className="ticker-title">
-          {tickers.left[0]}
-        </div>
-      </div>
-
-      {/* 오른쪽 레인 */}
-      <div className="ticker-lane">
-        <span className="ticker-press">한국경제</span>
-        <div className="ticker-title">
-          {tickers.right[0]}
-        </div>
-      </div>
+      <TickerLane 
+        type="left" 
+        pressName="연합뉴스" 
+      />
+      <div className="ticker-divider" />
+      <TickerLane 
+        type="right" 
+        pressName="한국경제" 
+      />
     </div>
   );
 }

@@ -1,44 +1,73 @@
 .ticker-container {
-  width: 100%;
-  height: 49px;
   display: flex;
-  gap: var(--space-8);
-  /* PDF 명세: Two equal lanes side by side */
+  align-items: center;
+  gap: 20px;
+  width: 930px;
+  height: 49px;
+  background-color: var(--bg-main, #f5f7f9);
+  border: 1px solid var(--border-color, #d2dae0);
+  margin-bottom: 20px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.ticker-divider {
+  width: 1px;
+  height: 14px;
+  background-color: var(--border-color, #d2dae0);
 }
 
 .ticker-lane {
-  flex: 1;
-  height: 100%;
-  background-color: var(--color-soft);
   display: flex;
   align-items: center;
-  padding: 0 var(--space-24);
-  gap: var(--space-16);
+  flex: 1;
+  height: 100%;
+  gap: 12px;
   cursor: pointer;
 }
 
 .ticker-press {
-  font-family: var(--font-main);
-  font-size: var(--typo-list-size);
   font-weight: 700;
-  color: var(--color-ink);
+  font-size: 14px;
+  color: var(--text-main, #141414);
   white-space: nowrap;
-  width: 56px; /* PDF 명세: width 56 fixed */
+}
+
+.ticker-title-wrapper {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .ticker-title {
-  font-family: var(--font-main);
-  font-size: var(--typo-list-size);
-  font-weight: 500;
-  color: var(--color-ink);
-  
-  /* PDF 명세: ellipsis, flex 1 */
-  flex: 1;
+  font-size: 14px;
+  color: var(--text-main, #141414);
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  width: 100%;
 }
 
-.ticker-lane:hover .ticker-title {
-  text-decoration: underline;
+/* [Phase 3.1] Crossfade 애니메이션 설정 */
+.ticker-title.animated {
+  animation: crossfade 0.55s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@keyframes crossfade {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ticker-lane.loading {
+  color: #999;
+  font-size: 12px;
 }
