@@ -8,6 +8,8 @@ import { createContext, useState, useEffect } from 'react';
  */
 export const NewsContext = createContext();
 
+const API_URL = 'https://69bd31e32bc2a25b22add65b.mockapi.io/subscriptions'
+
 export function NewsProvider({ children }) {
   const [newsData, setNewsData] = useState({
     tickers: null,
@@ -15,6 +17,41 @@ export function NewsProvider({ children }) {
     categories: [],
     isLoading: true
   });
+
+  const [subscriptions, setSubscriptions] = useState([]);
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setSubscriptions(data);
+    };
+    loadInitialData();
+  }, []);
+
+  const subscribe = async (pressId) => {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pressId: pressId })
+    });
+
+    const newSubscription = await response.json();
+
+    setSubscriptions(prev => [...prev, newSubscription]);
+  };
+
+  const unsubscribe = async (pressId) => {
+    const targetSub = subscriptions.find(sub => sub.pressId === pressId);
+
+    if (!targetSub) return;
+
+    await fetch(`${API_URL}/${targetSub.id}`, {
+      method: 'DELETE'
+    });
+
+    setSubscriptions(prev => prev.filter(sub => sub.id !== targetSub.id));
+  };
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -38,7 +75,12 @@ export function NewsProvider({ children }) {
   }, []);
 
   return (
-    <NewsContext.Provider value={newsData}>
+    <NewsContext.Provider value={{
+      ...newsData,
+      subscriptions,
+      subscribe,
+      unsubscribe
+    }}>
       {children}
     </NewsContext.Provider>
   );

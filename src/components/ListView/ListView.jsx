@@ -9,13 +9,15 @@ import './ListView.css';
  * 2. 렌더링 방어: 데이터가 비어있을 경우 화면이 깨지지 않도록 얼리 리턴(Early Return) 처리합니다.
  */
 function ListView() {
-  const { categories, pressList, isLoading } = useContext(NewsContext);
+  const { categories, pressList, isLoading, subscriptions, subscribe, unsubscribe } = useContext(NewsContext);
 
   // 데이터 로딩 중이거나 데이터가 없을 때의 처리
   if (isLoading || !pressList || pressList.length === 0) return null;
 
   // 현재는 UI 틀 구성을 위해 첫 번째 언론사 데이터를 사용합니다.
   const currentPress = pressList[0];
+  // [3.2] 현재 언론사가 구독 중인지 확인
+  const isSubscribed = subscriptions.some(sub => sub.pressId === currentPress.id);
 
   return (
     <div className="list-view-container">
@@ -38,7 +40,13 @@ function ListView() {
         <header className="news-header">
           <span className="press-name">{currentPress.name}</span>
           <span className="edit-time">{currentPress.lastEditTime} 편집</span>
-          <button className="subscribe-button">+ 구독하기</button>
+          {/* [3.2] 구독/해지 버튼 연동 */}
+          <button 
+            className={`subscribe-button ${isSubscribed ? 'subscribed' : ''}`}
+            onClick={() => isSubscribed ? unsubscribe(currentPress.id) : subscribe(currentPress.id)}
+          >
+            {isSubscribed ? '× 해지하기' : '+ 구독하기'}
+          </button>
         </header>
 
         {/* 바디: 기사 내용 */}
