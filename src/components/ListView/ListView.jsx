@@ -9,7 +9,7 @@ import './ListView.css';
  * 2. 렌더링 방어: 데이터가 비어있을 경우 화면이 깨지지 않도록 얼리 리턴(Early Return) 처리합니다.
  */
 function ListView() {
-  const { categories, pressList, isLoading, subscriptions, subscribe, unsubscribe } = useContext(NewsContext);
+  const { categories, pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds } = useContext(NewsContext);
 
   // 데이터 로딩 중이거나 데이터가 없을 때의 처리
   if (isLoading || !pressList || pressList.length === 0) return null;
@@ -44,6 +44,7 @@ function ListView() {
           <button 
             className={`subscribe-button ${isSubscribed ? 'subscribed' : ''}`}
             onClick={() => isSubscribed ? unsubscribe(currentPress.id) : subscribe(currentPress.id)}
+            disabled={processingIds.has(currentPress.id)}
           >
             {isSubscribed ? '× 해지하기' : '+ 구독하기'}
           </button>

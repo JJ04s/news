@@ -9,7 +9,7 @@ import './GridView.css';
  * 2. 렌더링 방어: 데이터 로딩 중이거나 데이터가 없을 경우를 대비한 방어 로직을 추가했습니다.
  */
 function GridView() {
-  const { pressList, isLoading, subscriptions, subscribe, unsubscribe } = useContext(NewsContext);
+  const { pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds } = useContext(NewsContext);
 
   if (isLoading || !pressList) return null;
 
@@ -53,6 +53,7 @@ function GridView() {
               <button 
                 className={`subscribe-button ${isSubscribed ? 'subscribed' : ''}`}
                 onClick={() => isSubscribed ? unsubscribe(press.id) : subscribe(press.id)}
+                disabled={processingIds.has(press.id)}
               >
                 {isSubscribed ? '× 해지하기' : '+ 구독하기'}
               </button>

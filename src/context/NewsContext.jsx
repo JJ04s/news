@@ -20,6 +20,8 @@ export function NewsProvider({ children }) {
 
   const [subscriptions, setSubscriptions] = useState([]);
 
+  const [processingIds, setProcessingIds] = useState(new Set());
+
   useEffect(() => {
     const loadInitialData = async () => {
       const response = await fetch(API_URL);
@@ -30,29 +32,58 @@ export function NewsProvider({ children }) {
   }, []);
 
   const subscribe = async (pressId) => {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pressId: pressId })
-    });
 
-    const newSubscription = await response.json();
+    if (subscriptions.some(sub => sub.pressId === pressId) || processingIds.has(pressId)) {
+      return;
+    }
 
-    setSubscriptions(prev => [...prev, newSubscription]);
+    setProcessingIds(prev => new Set(prev).add(pressId));
+    
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pressId: pressId })
+      });
+
+      const newSubscription = await response.json();
+      setSubscriptions(prev => [...prev, newSubscription]);
+    } catch (error) {
+      console.error('구독 실패:', error);
+    } finally {
+      setProcessingIds(prev => {
+        const next = new Set(prev);
+        next.delete(pressId);
+        return next;
+      });
+    }
   };
 
   const unsubscribe = async (pressId) => {
+    if (processingIds.has(pressId)) return;
+
     const targetSub = subscriptions.find(sub => sub.pressId === pressId);
 
     if (!targetSub) return;
 
-    await fetch(`${API_URL}/${targetSub.id}`, {
-      method: 'DELETE'
-    });
+    setProcessingIds(prev => new Set(prev).add(pressId));
 
-    setSubscriptions(prev => prev.filter(sub => sub.id !== targetSub.id));
+    try {
+      await fetch(`${API_URL}/${targetSub.id}`, {
+        method: 'DELETE'
+     });
+      setSubscriptions(prev => prev.filter(sub => sub.id !== targetSub.id));
+    } catch (error) {
+      console.error('해지 실패:', error);
+    } finally {
+      setProcessingIds(prev => {
+        const next = new Set(prev);
+        next.delete(pressId);
+        return next;
+      });
+    }
   };
-
+  
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -79,7 +110,8 @@ export function NewsProvider({ children }) {
       ...newsData,
       subscriptions,
       subscribe,
-      unsubscribe
+      unsubscribe,
+      processingIds
     }}>
       {children}
     </NewsContext.Provider>
