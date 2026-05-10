@@ -9,12 +9,20 @@ import './GridView.css';
  * 2. 렌더링 방어: 데이터 로딩 중이거나 데이터가 없을 경우를 대비한 방어 로직을 추가했습니다.
  */
 function GridView() {
-  const { pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds } = useContext(NewsContext);
+  const { pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds, tab } = useContext(NewsContext);
 
   if (isLoading || !pressList) return null;
 
+  /**
+   * [Phase 3.3] 데이터 필터링 로직
+   * 탭이 'sub'일 경우 구독 중인 언론사만 필터링하고, 'all'일 경우 전체를 보여줍니다.
+   */
+  const filteredList = tab === 'all' 
+    ? pressList 
+    : pressList.filter(press => subscriptions.some(sub => sub.pressId === press.id));
+
   // 24개의 그리드 칸을 유지하기 위해 데이터가 부족하더라도 24개를 보장합니다.
-  const displayList = pressList.slice(0, 24);
+  const displayList = filteredList.slice(0, 24);
 
   return (
     <div className="grid-view-container">

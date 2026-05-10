@@ -1,0 +1,80 @@
+.tab-bar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 930px;
+  height: 24px;
+  margin: 0 auto;
+  margin-top: 32px; /* PDF top: tab bar y 208 기준 간격 조정 */
+}
+
+/* 좌측 탭 클러스터 */
+.tab-left-cluster {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.tab-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tab-item {
+  font-family: var(--font-main);
+  font-size: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-mute);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.tab-item.active {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+/* 구독 뱃지 (PDF 6.3) */
+.subscription-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 10px; /* r-badge 10 */
+}
+
+/* 우측 뷰어 클러스터 */
+.tab-right-cluster {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.viewer-icon-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-mute);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.viewer-icon-button.active {
+  color: var(--color-ink);
+}
+
+.viewer-icon-button:hover {
+  color: var(--color-ink);
+}

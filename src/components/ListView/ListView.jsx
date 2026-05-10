@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { NewsContext } from '../../context/NewsContext';
+import { Newspaper } from 'lucide-react';
 import './ListView.css';
 
 /**
@@ -9,13 +10,35 @@ import './ListView.css';
  * 2. 렌더링 방어: 데이터가 비어있을 경우 화면이 깨지지 않도록 얼리 리턴(Early Return) 처리합니다.
  */
 function ListView() {
-  const { categories, pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds } = useContext(NewsContext);
+  const { categories, pressList, isLoading, subscriptions, subscribe, unsubscribe, processingIds, tab } = useContext(NewsContext);
 
   // 데이터 로딩 중이거나 데이터가 없을 때의 처리
   if (isLoading || !pressList || pressList.length === 0) return null;
 
-  // 현재는 UI 틀 구성을 위해 첫 번째 언론사 데이터를 사용합니다.
-  const currentPress = pressList[0];
+  /**
+   * [Phase 3.3] 데이터 필터링 로직
+   */
+  const filteredList = tab === 'all'
+    ? pressList
+    : pressList.filter(press => subscriptions.some(sub => sub.pressId === press.id));
+
+  // [Phase 3.3] 구독 목록이 비어있을 경우의 세련된 Empty State
+  if (filteredList.length === 0) {
+    return (
+      <div className="list-view-empty-container">
+        <div className="empty-content">
+          <Newspaper size={48} className="empty-icon" strokeWidth={1.2} />
+          <h3 className="empty-title">구독한 언론사가 없습니다.</h3>
+          <p className="empty-description">
+            전체 언론사에서 원하는 언론사를 구독해 보세요.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // 현재는 UI 틀 구성을 위해 필터링된 리스트의 첫 번째 언론사 데이터를 사용합니다.
+  const currentPress = filteredList[0];
   // [3.2] 현재 언론사가 구독 중인지 확인
   const isSubscribed = subscriptions.some(sub => sub.pressId === currentPress.id);
 

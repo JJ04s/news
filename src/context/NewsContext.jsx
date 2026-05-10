@@ -22,6 +22,10 @@ export function NewsProvider({ children }) {
 
   const [processingIds, setProcessingIds] = useState(new Set());
 
+  // [Phase 3.3] 뷰 전환 상태 추가
+  const [tab, setTab] = useState('all'); // 'all' | 'sub'
+  const [viewer, setViewer] = useState('grid'); // 'grid' | 'list'
+
   useEffect(() => {
     const loadInitialData = async () => {
       const response = await fetch(API_URL);
@@ -111,7 +115,11 @@ export function NewsProvider({ children }) {
       subscriptions,
       subscribe,
       unsubscribe,
-      processingIds
+      processingIds,
+      tab,
+      setTab,
+      viewer,
+      setViewer
     }}>
       {children}
     </NewsContext.Provider>
