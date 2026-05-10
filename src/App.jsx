@@ -8,10 +8,12 @@ import ListView from './components/ListView/ListView';
 import './App.css';
 
 /**
- * [Phase 3.1] 메인 App 컴포넌트
+ * [Phase 3.3] 메인 App 컴포넌트
  * 설계 포인트:
- * 1. NewsProvider 도입: Context API를 통해 전역 상태 관리 체계로 전환했습니다.
- * 2. 로직 분리: 데이터 fetching 로직을 NewsContext로 이동시켜 App의 책임을 줄였습니다.
+ * 1. 계층 구조 분리 (Provider vs Consumer): 
+ *    useContext는 자신보다 상위 트리에 Provider가 있어야만 작동합니다.
+ *    따라서 Provider를 선언하는 App과 이를 사용하는 AppContent를 분리하여 
+ *    "선 등록, 후 호출"의 계층 구조를 명확히 잡았습니다.
  */
 function AppContent() {
   const { viewer } = useContext(NewsContext);

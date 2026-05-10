@@ -30,7 +30,9 @@ function ListView() {
   if (isLoading || !pressList || pressList.length === 0) return null;
 
   /**
-   * [Phase 3.3 & 3.4] 데이터 필터링 로직
+   * [Phase 3.3 & 3.4] 파생 데이터 (Derived State) 필터링
+   * 별도의 State를 만들지 않고 기존 tab, activeCategory를 조합해 
+   * 렌더링 시점에 실시간으로 뉴스 목록을 계산합니다. (데이터 무결성 보장)
    */
   const tabFilteredList = tab === 'all'
     ? pressList
@@ -53,7 +55,10 @@ function ListView() {
     );
   }
 
-  // [Phase 3.4] 현재 인덱스에 해당하는 언론사 노출
+  /**
+   * [Phase 3.4] 현재 표시할 언론사 결정
+   * 상위 Context에서 계산된 currentPressIndex를 활용해 순환하는 데이터를 노출합니다.
+   */
   const currentPress = categoryFilteredList[currentPressIndex] || categoryFilteredList[0];
   const isSubscribed = currentPress ? subscriptions.some(sub => sub.pressId === currentPress.id) : false;
 

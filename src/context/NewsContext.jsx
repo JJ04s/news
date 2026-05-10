@@ -20,34 +20,50 @@ export function NewsProvider({ children }) {
 
   const [subscriptions, setSubscriptions] = useState([]);
 
+  /**
+   * [Phase 3.2] 중복 요청 방지 (Race Condition Guard)
+   * Set 객체를 활용하여 '처리 중'인 언론사 ID를 고유하게 관리합니다.
+   * boolean 대신 ID 기반으로 관리하여 여러 버튼이 동시에 작동해도 
+   * 내가 클릭한 버튼만 정확히 비활성화할 수 있는 정밀함을 제공합니다.
+   */
   const [processingIds, setProcessingIds] = useState(new Set());
 
-  // [Phase 3.3] 뷰 전환 상태 추가
-  const [tab, setTab] = useState('all'); // 'all' | 'sub'
-  const [viewer, setViewer] = useState('grid'); // 'grid' | 'list'
+  // [Phase 3.3] 뷰 전환 상태
+  const [tab, setTab] = useState('all'); // 'all' (전체) | 'sub' (구독)
+  const [viewer, setViewer] = useState('grid'); // 'grid' (그리드) | 'list' (리스트)
 
-  // [Phase 3.4] 리스트 뷰 카테고리 상태 추가
+  /**
+   * [Phase 3.4] 리스트 뷰 전용 상태
+   * 1. progress: 6초간 0~100까지 증가하며 UI 애니메이션을 주도합니다.
+   * 2. isTimerPaused: 마우스 호버 등 인터랙션에 따른 흐름 제어용 플래그입니다.
+   */
   const [activeCategory, setActiveCategory] = useState('종합/경제');
   const [currentPressIndex, setCurrentPressIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
 
-  // [Phase 3.4] 자동 전환 타이머 엔진
+  /**
+   * [Phase 3.4] 6초 자동 전환 타이머 엔진
+   * 100ms 주기로 실행되며, Cleanup 함수를 통해 타이머 중복 생성을 막습니다.
+   * 함수형 업데이트(prev => ...)를 사용하여 Stale Closure 문제를 해결하고 최신 상태를 보장합니다.
+   */
   useEffect(() => {
-    // 그리드 뷰이거나 데이터 로딩 중이면 타이머 작동 안 함
     if (viewer !== 'list' || newsData.isLoading || isTimerPaused) return;
 
     const timer = setInterval(() => {
       setProgress(prev => {
-        if (prev < 100) return prev + (100 / 60); // 100ms * 60 = 6s
+        if (prev < 100) return prev + (100 / 60); // 6초를 60회로 분할
         return 100;
       });
     }, 100);
 
     return () => clearInterval(timer);
-  }, [viewer, isTimerPaused, activeCategory, currentPressIndex]);
+  }, [viewer, isTimerPaused, activeCategory, currentPressIndex, newsData.isLoading]);
 
-  // [Phase 3.4] 프로그레스 완료 시 다음 단계로 이동
+  /**
+   * [Phase 3.4] 순환 로직 (Hierarchical Rotation)
+   * 모듈로(%) 연산과 조건문 중첩을 통해 "카테고리 내부 순환 후 다음 카테고리 이동" 구조를 구현함.
+   */
   useEffect(() => {
     if (progress >= 100) {
       const currentCategoryPresses = newsData.pressList.filter(
@@ -55,10 +71,8 @@ export function NewsProvider({ children }) {
       );
 
       if (currentPressIndex < currentCategoryPresses.length - 1) {
-        // 1. 같은 카테고리 내 다음 언론사
         setCurrentPressIndex(prev => prev + 1);
       } else {
-        // 2. 다음 카테고리로 이동
         const categoryIdx = newsData.categories.indexOf(activeCategory);
         const nextCategoryIdx = (categoryIdx + 1) % newsData.categories.length;
         setActiveCategory(newsData.categories[nextCategoryIdx]);
