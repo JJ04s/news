@@ -120,6 +120,12 @@
 /* 뉴스 콘텐츠 스타일 */
 .news-content-area {
   padding: 24px;
+  animation: listViewContentFadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes listViewContentFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .news-header {
@@ -157,12 +163,18 @@
   background-color: var(--color-soft);
   overflow: hidden;
   margin-bottom: 12px;
+  border-radius: var(--radius-sub);
 }
 
 .thumbnail-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.thumbnail-wrapper:hover img {
+  transform: scale(1.05);
 }
 
 .main-title {
@@ -170,6 +182,11 @@
   font-weight: 500;
   line-height: 1.4;
   color: var(--color-ink);
+  cursor: pointer;
+}
+
+.main-title:hover {
+  text-decoration: underline;
 }
 
 /* 서브 기사 */
@@ -191,9 +208,11 @@
   font-size: 16px;
   color: var(--color-ink);
   display: block;
+  transition: color 0.15s ease;
 }
 
 .sub-title:hover {
+  color: var(--color-accent-deep);
   text-decoration: underline;
 }
 
@@ -201,4 +220,23 @@
   margin-top: auto;
   font-size: 12px;
   color: var(--color-mute);
+}
+
+.category-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease, flex 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-tab:hover:not(.active) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.category-tab:hover .category-name {
+  color: var(--color-ink);
 }

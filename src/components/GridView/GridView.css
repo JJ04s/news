@@ -19,6 +19,12 @@
   border-bottom: 1px solid var(--color-line);
   cursor: pointer;
   overflow: hidden;
+  background-color: var(--color-card);
+  transition: background-color 0.2s ease;
+}
+
+.grid-item:hover {
+  background-color: var(--color-soft);
 }
 
 .press-logo {
@@ -26,6 +32,11 @@
   padding: 4px 8px;
   text-align: center;
   user-select: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.grid-item:hover .press-logo {
+  opacity: 0;
 }
 
 /* 호버 시 구독 버튼 레이어 */
@@ -35,35 +46,46 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--color-soft); /* 정의된 배경색으로 수정 */
-  display: none; /* 기본은 숨김 */
+  display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.grid-item:hover .press-logo {
-  display: none; /* 호버 시 로고 숨김 */
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .grid-item:hover .grid-hover-layer {
-  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .subscribe-button {
-  padding: 4px 12px;
+  padding: 6px 12px;
   border: 1px solid var(--color-line);
-  background-color: var(--color-card); /* 정의된 변수로 수정 */
-  border-radius: 50px;
+  background-color: var(--color-card);
+  border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 500;
-  color: var(--color-ink);
+  color: var(--color-sub);
   cursor: pointer;
-  transition: all 0.2s ease-in-out; /* 변화를 부드럽게 추가 */
+  box-shadow: var(--shadow-pill);
+  transition: all 0.2s ease-in-out;
 }
 
-.subscribe-button:hover {
+.subscribe-button:hover:not(:disabled) {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
   background-color: var(--color-soft);
-  transform: scale(1.05); /* 5% 살짝 커짐 */
-  box-shadow: var(--shadow-pill); /* 입체감 있는 그림자 */
-  border-color: var(--color-sub); /* 테두리도 살짝 진하게 */
+  transform: scale(1.05);
+}
+
+.subscribe-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.subscribe-button.subscribed {
+  background-color: var(--color-soft);
+  color: var(--color-mute);
 }
